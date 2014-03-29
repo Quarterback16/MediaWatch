@@ -1,0 +1,29 @@
+﻿MediaWatch exe will scan a set of directories and create
+a few reports.
+
+Media must be organised into proper directories
+  - Movies
+    ..\Movies\<movieName>\*.avi|*.mkv|*.vob
+  - TV
+    ..\TV\<tvShowName>\Season <NN>\<episode>*.avi|*.mkv
+
+3 Reports:-
+
+  1) Movie List
+  2) TV List
+  3) Latest acquisitions (x days)
+
+Backlog:-
+
+  * Urled TV list to Episodes by Seasons
+
+=== Debug Mode ===
+  - app.config points at ur test data 
+    input:  c:\Userdata\temp\Media\
+	output: c:\UserData\Temp\MediaWatch\
+
+=== Deployment ===
+  1) Build Release version
+  2) drop folder is k:\MyKeyRing\myProjects\MediaWatch\MediaWatch\bin\Release\
+  3) transfer new files to VESUVIUS->D:\shares\Videos
+
