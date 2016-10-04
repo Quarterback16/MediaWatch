@@ -118,7 +118,7 @@ namespace MediaWatch
 			str.AddColumn( new ReportColumn( "Title", "TITLE", "{0}", typeof (String) ) );
 			str.AddColumn( new ReportColumn( "Episode", "EPISODE", "{0}", typeof (String) ) );
 			str.AddColumn( new ReportColumn( "Format", "FORMAT", "{0}", typeof (String) ) );
-			str.AddColumn( new ReportColumn( "Date Added", "ADDED", "{0}", typeof (String) ) );
+			str.AddColumn( new ReportColumn( "Date Added", "ADDED", "{0}", typeof (DateTime) ) );
 			BuildTable( str, "TV", true );
 			str.SetSortOrder( "ADDED DESC" );
 			str.RenderAsHtml( string.Format( "{0}//Latest-{1}.htm", OutputDirectory, Inits ), true );
@@ -139,7 +139,7 @@ namespace MediaWatch
 					var dr = str.Body.NewRow();
 					dr[ "TITLE" ] = i.Title;
 					dr[ "FORMAT" ] = i.Format;
-					dr[ "ADDED" ] = i.LibraryDate.ToShortDateString();
+               dr[ "ADDED" ] = i.LibraryDate;//.ToShortDateString();
 					if (type.Equals( "TV" ) && latest)
 						dr[ "EPISODE" ] = i.Episode;
 					str.Body.Rows.Add( dr );

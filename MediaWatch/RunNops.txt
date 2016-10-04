@@ -23,6 +23,7 @@ Backlog:-
 	output: c:\UserData\Temp\MediaWatch\
 
 === Deployment ===
+  0) Check in Changes
   1) Build Release version
   2) release folder is \MediaWatch\MediaWatch\bin\Release\
   3) transfer new files to \\VESUVIUS->D:\shares\Software\MediaWatch

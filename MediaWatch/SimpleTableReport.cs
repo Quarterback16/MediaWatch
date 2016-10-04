@@ -370,8 +370,10 @@ namespace MediaWatch
 				{
 					if ( dc.DataType == Type.GetType( "System.Decimal" ) || dc.DataType == Type.GetType( "System.Int32" ) )
 						sOut = Decimal.Parse( data ).Equals( -1 ) ? "--" : string.Format( format, Decimal.Parse( data ) );
-				}
-				return sOut;
+            if ( dc.DataType == Type.GetType( "System.DateTime" ) )
+               sOut = string.Format( format, DateTime.Parse( data ).ToShortDateString() );
+         }
+         return sOut;
 			}
 
 			private static bool IsEven( int someNumber )
