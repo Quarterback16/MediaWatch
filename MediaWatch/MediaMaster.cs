@@ -4,10 +4,11 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 using MediaWatch.Models;
+using Helpers;
 
 namespace MediaWatch
 {
-	public class MediaMaster : XmlCache
+	public class MediaMaster : Helpers.XmlCache
 	{
       ILog Logger;
 
@@ -28,7 +29,6 @@ namespace MediaWatch
 					AddXmlMedia( node );
 
 				//  Create the XML navigation objects to allow xpath queries
-				//Utility.Announce( "SeasonMaster.Init Creating epXmlDoc" );
 				epXmlDoc = new XPathDocument( fileName );
 				// bad implementation - does not throw an exeception if XML is invalid
 				Utility.Announce( string.Format( "{0} loaded OK!", fileName ) );

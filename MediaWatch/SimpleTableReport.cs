@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helpers;
+using System;
 using System.Collections;
 using System.Data;
 using System.IO;
@@ -68,6 +69,7 @@ namespace MediaWatch
 			public SimpleTableReport( string header )
 			{
 				_header = header;
+            ReportHeader = header;
 				_footer = String.Empty;
 				_columns = new ArrayList();
 				_et = new ElapsedTimer();
@@ -154,10 +156,11 @@ namespace MediaWatch
 			/// <param name="persist">Whether to delete the file or not, sometimes we just want the string.</param>
 			public string RenderAsHtml( string fileName, bool persist )
 			{
-				var h = new HTMLFile( fileName, ReportHeader + " as of " + DateTime.Now.ToString( "dd MMM yy HH:MM tt" ) );
+				var h = new HTMLFile( fileName, ReportHeader + " as of " + DateTime.Now.ToLongDateString() );
 				AddStyles( h );
-				var html = string.Format( "<h3>{0}</h3>", ReportHeader ) + Header( _header );
-				if ( SubHeader.Length > 0 ) html += SubHeader;
+				//var html = string.Format( "<h3>{0}</h3>", ReportHeader ) + Header( _header );
+            var html = Header(_header);
+            if (SubHeader.Length > 0) html += SubHeader;
 				html += BodyOut();
 				h.AddToBody( html );
 				_et.Stop( DateTime.Now );
@@ -392,7 +395,7 @@ namespace MediaWatch
 
 			private string TopLine()
 			{
-				string theDate = string.Format( "Report Date: {0} ", DateTime.Now.ToString( "dd MMM yy  HH:mm" ) );
+				string theDate = string.Format( "Report Date: {0} {1}", DateTime.Now.ToLongDateString(), DateTime.Now.ToShortTimeString() );
 				//			if ( string.IsNullOrEmpty( this.SubHeader ) )
 				return theDate;
 				//			else

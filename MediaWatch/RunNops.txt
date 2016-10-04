@@ -24,6 +24,11 @@ Backlog:-
 
 === Deployment ===
   1) Build Release version
-  2) drop folder is k:\MyKeyRing\myProjects\MediaWatch\MediaWatch\bin\Release\
-  3) transfer new files to VESUVIUS->D:\shares\Videos
+  2) release folder is \MediaWatch\MediaWatch\bin\Release\
+  3) transfer new files to \\VESUVIUS->D:\shares\Software\MediaWatch
+  4) schedule to run nightly at 00:07
+  5) config info in MediaWatch.exe.config 
+  6) logs in \\Vesuvius\Public\logs\mediawatch-${shortdate}.log
 
+=== Source Control === 
+  - Git

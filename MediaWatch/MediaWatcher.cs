@@ -6,10 +6,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using MediaWatch.Logging;
 using MediaWatch.Models;
+using Helpers;
 
 namespace MediaWatch
 {
-	internal class MediaWatcher
+	public class MediaWatcher
 	{
 		public MediaMaster Master { get; set; }
 		public string OutputDirectory { get; set; }
@@ -30,12 +31,32 @@ namespace MediaWatch
 			FolderList = new List<FolderItem>();
 			MediaList = new List<MediaItem>();
 			Logger = new NLogger();
-			Logger.Info( "Media Watcher ver. 1.01" );
+			Logger.Info( "Media Watcher ver. 2.00" );
 		}
+
+      public void Execute()
+      {
+         if (DoMovies)
+         {
+            Logger.Info("---Movies--------------------------------------------------------------------------------");
+            RenderMoviesAsHtml();
+         }
+         if (DoTv)
+         {
+            Logger.Info("---TV------------------------------------------------------------------------------------");
+            RenderTvAsHtml();
+         }
+         if (DoLatest)
+         {
+            Logger.Info("---Latest--------------------------------------------------------------------------------");
+            RenderLatestFilesAsHtml();
+         }
+      }
 
 		public void RenderMoviesAsHtml()
 		{
 			ReportType = "Movie Report";
+         
 			var str = new SimpleTableReport( string.Format( "{1} {0}", Inits, ReportType ) );
 			str.AddStyle(
 				"#container { text-align: left; background-color: #ccc; margin: 0 auto; border: 1px solid #545454; width: 641px; padding:10px; font: 13px/19px Trebuchet MS, Georgia, Times New Roman, serif; }" );
@@ -157,8 +178,10 @@ namespace MediaWatch
 			Utility.Announce( string.Format( "Processing {1} files in {0}...", targetDirectory, extension ) );
 			// Process the list of files found in the directory.
 			var fileEntries = Directory.GetFiles( targetDirectory, "*." + extension, SearchOption.AllDirectories );
-			Logger.Info( string.Format( "{0} entries with extension {1}", fileEntries.Count(), extension ) );
-			foreach ( var fileName in fileEntries )
+#if DEBUG
+         Logger.Info( string.Format( "{0} entries with extension {1}", fileEntries.Count(), extension ) );
+#endif
+         foreach ( var fileName in fileEntries )
 				ProcessFile( fileName, targetDirectory, extension, latest );
 		}
 
@@ -225,11 +248,13 @@ namespace MediaWatch
 				Utility.Announce( string.Format( "Adding {0} from {1}", fi.Name, fi.DirectoryName ) );
 			}
 			action += " as " + mi.Title;
-			if ( latest )
+#if DEBUG
+         if ( latest )
 				Logger.Info( string.Format( "File->{0,-50} - {1}", fi.FullName, action ) );
-			//else
-			//   action = "invalid";
-		}
+         //else
+         //   action = "invalid";
+#endif
+      }
 
 		private void AddMedia( MediaItem mi, bool latest )
 		{
@@ -240,11 +265,15 @@ namespace MediaWatch
 				var libDate = xmlItem.LibraryDate;
 				if (libDate < CutoffDate)
 				{
-					Logger.Info( string.Format( "    {0} is old (library date {1})", mi.Filename, libDate.ToShortDateString() ) );
-					return;
+#if DEBUG
+               Logger.Info( string.Format( "    {0} is old (library date {1})", mi.Filename, libDate.ToShortDateString() ) );
+#endif
+               return;
 				}
-				Logger.Info( string.Format( "    {0} is new - included in the latest", mi.Filename ) );
-			}
+#if DEBUG
+            Logger.Info( string.Format( "    {0} is new - included in the latest", mi.Filename ) );
+#endif
+         }
 
 			if (ReportType.Equals( "TV Show Report" ))
 			{
@@ -365,5 +394,70 @@ namespace MediaWatch
 			}
 			return mediaType;
 		}
-	}
+
+      public void Configure(System.Collections.Specialized.NameValueCollection appSettings )
+      {
+         Inits = "LSC";
+
+         //  load up all the media folders
+
+         // Get the collection enumerator.
+         var appSettingsEnum = appSettings.Keys.GetEnumerator();
+
+         // Loop through the collection and
+         // display the appSettings key, value pairs.
+         var i = 0;
+         while (appSettingsEnum.MoveNext())
+         {
+            var key = appSettings.Keys[i];
+            if (key.StartsWith("MediaFolder"))
+            {
+               FolderList.Add(new Models.FolderItem { Name = appSettings[key] });
+               Utility.Announce(string.Format("Adding Media Folder {0}", appSettings[key]));
+            }
+            else if (key.StartsWith("OutputDirectory"))
+            {
+               OutputDirectory = appSettings[key];
+            }
+            else if (key.StartsWith("XmlDirectory"))
+            {
+               XmlDirectory = appSettings[key];
+            }
+            else if (key.StartsWith("Inits"))
+            {
+               Inits = appSettings[key];
+            }
+            else if (key.StartsWith("DaysBack"))
+            {
+               DaysBack = Int32.Parse(appSettings[key]);
+            }
+            else if (key.StartsWith("Report-Latest"))
+            {
+               var latest = appSettings[key];
+               if (latest.Equals("Yes"))
+                  DoLatest = true;
+            }
+            else if (key.StartsWith("Report-Movies"))
+            {
+               var movies = appSettings[key];
+               if (movies.Equals("Yes"))
+                  DoMovies = true;
+            }
+            else if (key.StartsWith("Report-TV"))
+            {
+               var tv = appSettings[key];
+               if (tv.Equals("Yes"))
+                  DoTv = true;
+            }
+            i++;
+         }
+         var mm = new MediaMaster("Media", XmlDirectory, "media.xml", Logger);
+         Master = mm;
+      }
+
+      public void DumpXml()
+      {
+         Master.Dump2Xml();
+      }
+   }
 }

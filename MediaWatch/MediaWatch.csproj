@@ -70,8 +70,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleTableReport.cs" />
-    <Compile Include="Utility.cs" />
-    <Compile Include="XmlCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -81,6 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="RunNops.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Helpers\Helpers\Helpers.csproj">
+      <Project>{dda0342a-a7e7-48d7-9cb3-4b7676269740}</Project>
+      <Name>Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
