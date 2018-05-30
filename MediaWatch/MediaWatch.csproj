@@ -16,7 +16,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -50,6 +50,7 @@
     <Reference Include="System.Transactions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="WebActivator">
       <HintPath>..\packages\WebActivator.1.0.0.0\lib\WebActivator.dll</HintPath>
@@ -81,7 +82,7 @@
     <Content Include="RunNops.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Helpers\Helpers\Helpers.csproj">
+    <ProjectReference Include="..\..\Helpers\Helpers.csproj">
       <Project>{dda0342a-a7e7-48d7-9cb3-4b7676269740}</Project>
       <Name>Helpers</Name>
     </ProjectReference>

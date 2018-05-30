@@ -1,24 +1,26 @@
-﻿using System;
-using System.IO;
+﻿using Helpers;
 using System.Configuration;
-using Helpers;
+using System.IO;
 
 namespace MediaWatch
 {
-	public class Program
-	{
-		static void Main()
-		{
-			var mw = new MediaWatcher {OutputDirectory = Utility.OutputDirectory()};
-			if ( !Directory.Exists( mw.OutputDirectory ) )
-				mw.OutputDirectory = Directory.GetCurrentDirectory();
+    public class Program
+    {
+        private static void Main()
+        {
+            var mw = new MediaWatcher
+            {
+                OutputDirectory = Utility.OutputDirectory()
+            };
 
-         mw.Configure(ConfigurationManager.AppSettings);
+            if (!Directory.Exists(mw.OutputDirectory))
+                mw.OutputDirectory = Directory.GetCurrentDirectory();
 
-         mw.Execute();
+            mw.Configure(ConfigurationManager.AppSettings);
 
-			mw.DumpXml();
-		}
+            mw.Execute();
 
-	}
+            mw.DumpXml();
+        }
+    }
 }

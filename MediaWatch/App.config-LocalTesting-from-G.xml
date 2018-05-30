@@ -1,0 +1,35 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <configSections>
+    <section name="nlog" type="NLog.Config.ConfigSectionHandler, NLog"/>
+  </configSections>
+
+  <appSettings>
+    <add key="Inits" value="TEST"/>
+    <add key="DaysBack" value="12"/>
+    <add key="OutputDirectory" value="g:\\FileSync\\SyncProjects\\MediaWatch\\MediaWatch.Tests\\bin\\Debug\\Output\\"/>
+    <add key="XmlDirectory" value="g:\\FileSync\\SyncProjects\\MediaWatch\\MediaWatch.Tests\\bin\\Debug\\XML\\"/>
+    <add key="Report-Latest" value="Yes"/>
+    <add key="Report-TV" value="No"/>
+    <add key="Report-Movies" value="No"/>
+    <add key="MediaFolder1" value="g:\\FileSync\\SyncProjects\\MediaWatch\\MediaWatch.Tests\\bin\\Debug\\Movies\\"/>
+    <add key="MediaFolder2" value="g:\\FileSync\\SyncProjects\\MediaWatch\\MediaWatch.Tests\\bin\\Debug\\TV\\" />
+  </appSettings>
+
+  <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <targets>
+      <target name="file" xsi:type="File" fileName="g:\FileSync\SyncProjects\MediaWatch\MediaWatch.Tests\bin\Debug\log\mediawatch-${shortdate}.log"/>
+      <target name="ds" xsi:type="OutputDebugString"/>
+      <target name="console" xsi:type="Console" layout="${longdate} ${callsite} ${level} ${message}"/>
+    </targets>
+
+    <rules>
+      <logger name="*" minlevel="Info" writeTo="console,file"/>
+    </rules>
+
+  </nlog>
+
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0"/>
+  </startup>
+</configuration>
